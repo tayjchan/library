@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
-import { Grid, Button, Form, Segment, Message } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import SectionRow from "./components/section";
+import AddBookForm from "./components/addBookForm";
 
 const books = [
   { title: "Title1", description: "Description1" },
@@ -56,28 +57,7 @@ function App() {
           getColorWithIndex={(i) => getColor(i + 2)}
         />
       </Grid>
-      <h2>add.</h2>
-      <Segment>
-        <Form>
-          <Form.Group widths='equal'>
-            <Form.Input fluid label='Book Title' placeholder='' />
-            <Form.Input fluid label='Author' placeholder='' />
-          </Form.Group>
-          <Button type='submit'>Search</Button>
-        </Form>
-        <div style={{ padding: "16px 0" }}>
-          <h3>SEARCH RESULTS</h3>
-          <Button.Group>
-            <Button>Add to read.</Button>
-            <Button.Or />
-            <Button>Add to later.</Button>
-          </Button.Group>
-          <Message
-            info
-            content='This book has also been added to your list in Goodreads.'
-          />
-        </div>
-      </Segment>
+      <AddBookForm />
     </div>
   );
 }
