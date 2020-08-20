@@ -1,26 +1,15 @@
 import React from "react";
-import ColorBlock from "./colorBlock";
-import { Grid } from "semantic-ui-react";
+import Carousel from "./carousel";
 
-const SectionRow = ({ title, books, getColorWithIndex }) => {
+const Section = ({ title, books, getColorWithIndex }) => {
   return (
-    <Grid.Row>
-      <Grid.Column width={2}>
-        <h2>{title}</h2>
-      </Grid.Column>
-      <Grid.Column style={{ display: "flex" }}>
-        {books.map((book, index) => {
-          return (
-            <ColorBlock
-              key={book.title + "_" + index}
-              title={book.title}
-              color={getColorWithIndex(index)}
-            />
-          );
-        })}
-      </Grid.Column>
-    </Grid.Row>
+    <>
+      <h2>{title}</h2>
+      <div style={{ display: "flex" }}>
+        <Carousel items={books} getColorWithIndex={getColorWithIndex} />
+      </div>
+    </>
   );
 };
 
-export default SectionRow;
+export default Section;

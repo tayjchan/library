@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
-import { Grid, Button, Popup } from "semantic-ui-react";
-import SectionRow from "./components/section";
+import { Button, Popup } from "semantic-ui-react";
+import Section from "./components/section";
 import AddBookForm from "./components/addBookForm";
 
 const books = [
@@ -21,7 +21,7 @@ const books = [
   { title: "Title14", description: "Description14" },
 ];
 
-const colors = ["#D363D8", "#F18A92", "#F4CD83", "#71EAD7"];
+const colors = ["#a3d2ca", "bisque", "#5eaaa8", "#F4CD83", "#71EAD7"];
 
 function App() {
   const getColor = (index) => {
@@ -45,30 +45,30 @@ function App() {
       <div className='buttonGroup'>
         <Popup
           content='Show as lists.'
-          trigger={<Button circular icon='list ul' />}
+          trigger={<Button circular color='teal' icon='list ul' />}
         />
         <Popup
           content='Go to Goodreads.'
-          trigger={<Button circular icon='goodreads' />}
+          trigger={<Button circular color='teal' icon='goodreads' />}
         />
         <Popup
           content='Sign-in via Google.'
-          trigger={<Button circular icon='sign-in' />}
+          trigger={<Button circular color='teal' icon='sign-in' />}
         />
       </div>
       <hr />
-      <Grid columns='two' divided>
-        <SectionRow
+      <div>
+        <Section
           books={books}
           title='done.'
           getColorWithIndex={(i) => getColor(i)}
         />
-        <SectionRow
+        <Section
           books={books}
           title='later.'
           getColorWithIndex={(i) => getColor(i + 2)}
         />
-      </Grid>
+      </div>
       <AddBookForm />
     </div>
   );

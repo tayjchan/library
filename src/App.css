@@ -1,6 +1,5 @@
 .App {
   padding: 30px;
-  margin-top: 60px;
   max-width: 800px;
 }
 .buttonGroup {
@@ -25,6 +24,13 @@
   width: 160px;
   overflow: hidden;
   padding: 2px;
+  text-align: center;
+  display: table;
+}
+.ColorBlock-text {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .selectedBook {
   color: teal;

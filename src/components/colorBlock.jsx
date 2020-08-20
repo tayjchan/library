@@ -9,7 +9,9 @@ const ColorBlock = ({ title, color }) => {
         backgroundColor: color,
       }}
     >
-      <div className='ColorBlock-item'>{title}</div>
+      <div className='ColorBlock-item'>
+        <p className='ColorBlock-text'>{title}</p>
+      </div>
     </div>
   );
 };
