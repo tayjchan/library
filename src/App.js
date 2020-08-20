@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
-import { Grid } from "semantic-ui-react";
+import { Grid, Button, Popup } from "semantic-ui-react";
 import SectionRow from "./components/section";
 import AddBookForm from "./components/addBookForm";
 
 const books = [
-  { title: "Title1", description: "Description1" },
-  { title: "Title2", description: "Description2" },
-  { title: "Title3", description: "Description3" },
+  { title: "A Series of Unfortunate Events", description: "Description1" },
+  { title: "Charlie and the Chocolate Factory", description: "Description2" },
+  { title: "Infinite Jest", description: "Description3" },
   { title: "Title4", description: "Description4" },
   { title: "Title5", description: "Description5" },
   { title: "Title6", description: "Description6" },
@@ -21,11 +21,11 @@ const books = [
   { title: "Title14", description: "Description14" },
 ];
 
-const colors = ["#7B40E4", "#D363D8", "#F18A92", "#F4CD83", "#71EAD7"];
+const colors = ["#D363D8", "#F18A92", "#F4CD83", "#71EAD7"];
 
 function App() {
   const getColor = (index) => {
-    switch (index % 5) {
+    switch (index % 4) {
       case 0:
         return colors[0];
       case 1:
@@ -34,8 +34,6 @@ function App() {
         return colors[2];
       case 3:
         return colors[3];
-      case 4:
-        return colors[4];
       default:
         return colors[0];
     }
@@ -44,6 +42,20 @@ function App() {
   return (
     <div className='App'>
       <h1>library.</h1>
+      <div className='buttonGroup'>
+        <Popup
+          content='Show as lists.'
+          trigger={<Button circular icon='list ul' />}
+        />
+        <Popup
+          content='Go to Goodreads.'
+          trigger={<Button circular icon='goodreads' />}
+        />
+        <Popup
+          content='Sign-in via Google.'
+          trigger={<Button circular icon='sign-in' />}
+        />
+      </div>
       <hr />
       <Grid columns='two' divided>
         <SectionRow

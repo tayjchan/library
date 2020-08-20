@@ -1,34 +1,39 @@
 import React, { useState } from "react";
-import { Button, Message } from "semantic-ui-react";
+import { Button, Segment } from "semantic-ui-react";
 
-const SearchResultsContainer = ({ books }) => {
-  const [showInfoBox, setShowInfoBox] = useState(false);
+const SearchResultsContainer = ({ books, setShowInfoBox, resetSearch }) => {
+  const [selectedBooks, setSelectedBooks] = useState([]);
+  const onClickButton = (e) => {
+    resetSearch();
+    setShowInfoBox(true);
+  };
+
+  const onClickBook = (bookId) => {
+    setSelectedBooks([...selectedBooks, bookId]);
+  };
+
   return (
-    <div style={{ padding: "16px 0" }}>
+    <Segment>
       <h3>SEARCH RESULTS</h3>
       {books && books.length > 0 && (
         <ul>
-          {books.map((book, index) => (
-            <li key={book.title + "_" + index}>
-              {book.title}
-              {" by "}
-              {book.author}
+          {books.map(({ bookId, title, author }) => (
+            <li
+              key={bookId}
+              onClick={(e) => onClickBook(bookId)}
+              className={selectedBooks.includes(bookId) ? "selectedBook" : null}
+            >
+              {title} by {author}
             </li>
           ))}
         </ul>
       )}
       <Button.Group>
-        <Button onClick={() => setShowInfoBox(true)}>Add to read.</Button>
+        <Button onClick={onClickButton}>Add to read.</Button>
         <Button.Or />
-        <Button>Add to later.</Button>
+        <Button onClick={onClickButton}>Add to later.</Button>
       </Button.Group>
-      {showInfoBox && (
-        <Message
-          info
-          content='This book has also been added to your list in Goodreads.'
-        />
-      )}
-    </div>
+    </Segment>
   );
 };
 

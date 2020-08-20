@@ -1,4 +1,31 @@
 .App {
   padding: 30px;
   margin-top: 60px;
+  max-width: 800px;
+}
+.buttonGroup {
+  float: right;
+  position: relative;
+  top: -50px;
+}
+.ColorBlock {
+  width: 32px;
+  height: 160px;
+  margin-right: 4px;
+}
+.ColorBlock-item {
+  transform: rotate(270deg);
+  position: relative;
+  left: -64px;
+  bottom: -64px;
+  color: black;
+  font-size: 12px;
+  line-height: 12px;
+  height: 32px;
+  width: 160px;
+  overflow: hidden;
+  padding: 2px;
+}
+.selectedBook {
+  color: teal;
 }
