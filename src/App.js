@@ -6,26 +6,9 @@ import Section from "./components/section";
 import AddBookForm from "./components/addBookForm";
 import { getBooks } from "./services/goodreadsService";
 
-const colors = ["#a3d2ca", "bisque", "#5eaaa8", "#F4CD83", "#71EAD7"];
-
 function App() {
-  const [readBooks, setReadBooks] = useState([]);
-  const [laterBooks, setLaterBooks] = useState([]);
-
-  const getColor = (index) => {
-    switch (index % 4) {
-      case 0:
-        return colors[0];
-      case 1:
-        return colors[1];
-      case 2:
-        return colors[2];
-      case 3:
-        return colors[3];
-      default:
-        return colors[0];
-    }
-  };
+  const [readBooks, setReadBooks] = useState(null);
+  const [laterBooks, setLaterBooks] = useState(null);
 
   useEffect(() => {
     async function getBookLists() {
@@ -57,16 +40,8 @@ function App() {
       <hr />
       <AddBookForm />
       <div>
-        <Section
-          books={readBooks}
-          title='done.'
-          getColorWithIndex={(i) => getColor(i)}
-        />
-        <Section
-          books={laterBooks}
-          title='later.'
-          getColorWithIndex={(i) => getColor(i + 2)}
-        />
+        <Section books={readBooks} title='done.' />
+        <Section books={laterBooks} title='later.' />
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 
-const ColorBlock = ({ title, color, author, imgUrl }) => {
+const Book = ({ title, author, imgUrl }) => {
   const container = useRef();
   const text = useRef();
+  const bookImg = useRef();
 
   const hoverImg = (event) => {
     const imgWidth = event.target.offsetWidth;
-    const imgHeight = event.target.offsetWidth;
+    const imgHeight = event.target.offsetHeight;
 
     event.target.style.opacity = "0.2";
     container.current.style.minWidth = imgWidth + "px";
@@ -15,28 +16,21 @@ const ColorBlock = ({ title, color, author, imgUrl }) => {
     text.current.style.left = -imgWidth + "px";
   };
 
-  const stopHoverImg = (event) => {
-    event.target.style.opacity = "1";
+  const stopHover = () => {
+    bookImg.current.style.opacity = "1";
     container.current.style.minWidth = "64px";
     text.current.style.left = "0px";
   };
 
   return (
-    <div key={title} ref={container} className='ColorBlock' draggable='true'>
+    <div key={title} ref={container} className='Book' draggable='true'>
       <img
         src={imgUrl}
         alt={title}
+        ref={bookImg}
         onMouseEnter={(e) => hoverImg(e)}
-        onMouseLeave={(e) => stopHoverImg(e)}
       />
-      <div
-        ref={text}
-        style={{
-          position: "relative",
-          textAlign: "center",
-          overflowX: "hidden",
-        }}
-      >
+      <div ref={text} className='Book-text' onMouseLeave={(e) => stopHover(e)}>
         <b>{title}</b>
         <br />
         {author}
@@ -45,4 +39,4 @@ const ColorBlock = ({ title, color, author, imgUrl }) => {
   );
 };
 
-export default ColorBlock;
+export default Book;

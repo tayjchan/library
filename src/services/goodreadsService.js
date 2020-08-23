@@ -8,7 +8,6 @@ const endpoint =
 const config = {
   headers: { "X-Requested-With": "XMLHttpRequest" },
 };
-// https://www.goodreads.com/review/list/62798650?key=UcQW9As1jUkPj9SLeOgKw &v=2&shelf=read&page=1
 
 function parseXml(xml) {
   return new Promise((resolve, reject) => {
@@ -34,6 +33,7 @@ export async function getBooks(shelf) {
   const goodreadsResult = await axios.get(api, config);
   const json = await parseXml(goodreadsResult.data);
   const results = json.GoodreadsResponse.reviews[0].review;
+  if (!results) return [];
   return results.map((res) => {
     const book = res.book[0];
     return {
