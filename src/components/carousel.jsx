@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "semantic-ui-react";
-import ColorBlock from "./colorBlock";
+import { Button, Loader } from "semantic-ui-react";
+import Book from "./book";
 
-const Carousel = ({ items, getColorWithIndex }) => {
+const Carousel = ({ items }) => {
   const [startIndex, setStartIndex] = useState(0);
   const onClickLeft = () => {
     if (startIndex > 0) {
@@ -16,42 +16,55 @@ const Carousel = ({ items, getColorWithIndex }) => {
   };
 
   const displayItems = (blocks) => {
-    let colorBlocks = [];
+    let books = [];
     for (let index = startIndex; index < blocks.length; index++) {
       const element = blocks[index];
-      colorBlocks.push(
-        <ColorBlock
+      books.push(
+        <Book
           key={element.title}
           title={element.title}
-          color={getColorWithIndex(index)}
+          imgUrl={element.imageUrl}
+          author={element.author}
         />
       );
     }
 
     let numPlaceholders = startIndex;
     while (numPlaceholders > 0) {
-      colorBlocks.push(
-        <ColorBlock key={numPlaceholders} color={"transparent"} />
-      );
+      books.push(<Book key={numPlaceholders} color={"transparent"} />);
       numPlaceholders--;
     }
-    return colorBlocks;
+
+    // Place an extra placeholder at end
+    books.push(<Book key={numPlaceholders} color={"transparent"} />);
+
+    return books;
   };
 
   return (
-    <div style={{ display: "flex", margin: "auto" }}>
+    <div className='Carousel'>
       <Button
         icon='arrow left'
         onClick={onClickLeft}
-        disabled={startIndex === 0}
+        disabled={!items || startIndex === 0}
+        style={{ height: "50px", margin: "0 10px" }}
       />
-      <div style={{ display: "flex", maxWidth: "480px", overflow: "hidden" }}>
-        {items && items.length > 0 && displayItems(items)}
+      <div style={{ display: "flex", overflow: "hidden", flex: "1" }}>
+        {items ? (
+          items.length > 0 ? (
+            displayItems(items)
+          ) : (
+            <div style={{ margin: "0 auto" }}>No books found.</div>
+          )
+        ) : (
+          <Loader inline='centered' active />
+        )}
       </div>
       <Button
         icon='arrow right'
         onClick={onClickRight}
-        disabled={startIndex === items.length - 1}
+        disabled={!items || startIndex === items.length - 1}
+        style={{ height: "50px", margin: "0 10px" }}
       />
     </div>
   );
