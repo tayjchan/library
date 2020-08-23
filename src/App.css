@@ -1,6 +1,7 @@
 .App {
   padding: 30px;
   max-width: 800px;
+  margin: 0 auto;
 }
 .buttonGroup {
   float: right;
@@ -8,30 +9,14 @@
   top: -50px;
 }
 .ColorBlock {
-  width: 32px;
-  height: 160px;
   margin-right: 4px;
-}
-.ColorBlock-item {
-  transform: rotate(270deg);
-  position: relative;
-  left: -64px;
-  bottom: -64px;
-  color: black;
-  font-size: 12px;
-  line-height: 12px;
-  height: 32px;
-  width: 160px;
+  width: 64px;
   overflow: hidden;
-  padding: 2px;
-  text-align: center;
-  display: table;
+  min-width: 64px;
+  display: flex;
+  align-items: center;
 }
-.ColorBlock-text {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-}
+
 .selectedBook {
   color: teal;
 }

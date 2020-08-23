@@ -1,29 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Popup } from "semantic-ui-react";
 import Section from "./components/section";
 import AddBookForm from "./components/addBookForm";
-
-const books = [
-  { title: "A Series of Unfortunate Events", description: "Description1" },
-  { title: "Charlie and the Chocolate Factory", description: "Description2" },
-  { title: "Infinite Jest", description: "Description3" },
-  { title: "Title4", description: "Description4" },
-  { title: "Title5", description: "Description5" },
-  { title: "Title6", description: "Description6" },
-  { title: "Title7", description: "Description7" },
-  { title: "Title8", description: "Description8" },
-  { title: "Title9", description: "Description9" },
-  { title: "Title11", description: "Description11" },
-  { title: "Title12", description: "Description12" },
-  { title: "Title13", description: "Description13" },
-  { title: "Title14", description: "Description14" },
-];
+import { getBooks } from "./services/goodreadsService";
 
 const colors = ["#a3d2ca", "bisque", "#5eaaa8", "#F4CD83", "#71EAD7"];
 
 function App() {
+  const [readBooks, setReadBooks] = useState([]);
+  const [laterBooks, setLaterBooks] = useState([]);
+
   const getColor = (index) => {
     switch (index % 4) {
       case 0:
@@ -38,6 +26,16 @@ function App() {
         return colors[0];
     }
   };
+
+  useEffect(() => {
+    async function getBookLists() {
+      const done = await getBooks("read");
+      const later = await getBooks("to-read");
+      setReadBooks(done);
+      setLaterBooks(later);
+    }
+    getBookLists();
+  }, []);
 
   return (
     <div className='App'>
@@ -57,19 +55,19 @@ function App() {
         />
       </div>
       <hr />
+      <AddBookForm />
       <div>
         <Section
-          books={books}
+          books={readBooks}
           title='done.'
           getColorWithIndex={(i) => getColor(i)}
         />
         <Section
-          books={books}
+          books={laterBooks}
           title='later.'
           getColorWithIndex={(i) => getColor(i + 2)}
         />
       </div>
-      <AddBookForm />
     </div>
   );
 }

@@ -1,9 +1,14 @@
 import axios from "axios";
 import * as xml2js from "xml2js";
-import { key } from "../constants";
+import { key, userId } from "../constants";
 
 const endpoint =
   "https://cors-anywhere.herokuapp.com/https://www.goodreads.com";
+
+const config = {
+  headers: { "X-Requested-With": "XMLHttpRequest" },
+};
+// https://www.goodreads.com/review/list/62798650?key=UcQW9As1jUkPj9SLeOgKw &v=2&shelf=read&page=1
 
 function parseXml(xml) {
   return new Promise((resolve, reject) => {
@@ -17,13 +22,31 @@ function parseXml(xml) {
   });
 }
 
+export async function getBooks(shelf) {
+  const api =
+    endpoint +
+    "/review/list/" +
+    userId +
+    ".xml?key=" +
+    key +
+    "&v=2&shelf=" +
+    shelf;
+  const goodreadsResult = await axios.get(api, config);
+  const json = await parseXml(goodreadsResult.data);
+  const results = json.GoodreadsResponse.reviews[0].review;
+  return results.map((res) => {
+    const book = res.book[0];
+    return {
+      title: book.title[0],
+      author: book.authors[0].author[0].name[0],
+      bookId: book.work[0].id[0],
+      imageUrl: book.image_url[0],
+    };
+  });
+}
+
 export async function searchBooks(query) {
   const api = endpoint + "/search/index.xml?key=" + key + "&q=" + query;
-
-  var config = {
-    headers: { "X-Requested-With": "XMLHttpRequest" },
-  };
-
   const goodreadsResult = await axios.get(api, config);
   const json = await parseXml(goodreadsResult.data);
   const results = json.GoodreadsResponse.search[0].results[0].work;

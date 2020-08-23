@@ -24,6 +24,8 @@ const Carousel = ({ items, getColorWithIndex }) => {
           key={element.title}
           title={element.title}
           color={getColorWithIndex(index)}
+          imgUrl={element.imageUrl}
+          author={element.author}
         />
       );
     }
@@ -39,19 +41,28 @@ const Carousel = ({ items, getColorWithIndex }) => {
   };
 
   return (
-    <div style={{ display: "flex", margin: "auto" }}>
+    <div
+      style={{
+        display: "flex",
+        margin: "auto",
+        height: "180px",
+        alignItems: "center",
+      }}
+    >
       <Button
         icon='arrow left'
         onClick={onClickLeft}
         disabled={startIndex === 0}
+        style={{ height: "50px", margin: "0 10px" }}
       />
-      <div style={{ display: "flex", maxWidth: "480px", overflow: "hidden" }}>
+      <div style={{ display: "flex", width: "480px", overflow: "hidden" }}>
         {items && items.length > 0 && displayItems(items)}
       </div>
       <Button
         icon='arrow right'
         onClick={onClickRight}
         disabled={startIndex === items.length - 1}
+        style={{ height: "50px", margin: "0 10px" }}
       />
     </div>
   );

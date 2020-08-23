@@ -30,7 +30,7 @@ const AddBookForm = () => {
   }
 
   return (
-    <>
+    <div style={{ paddingBottom: "24px" }}>
       <h2 ref={searchResultsHeader}>add.</h2>
       <Form>
         <Form.Input
@@ -59,7 +59,7 @@ const AddBookForm = () => {
           content='This book has also been added to your list in Goodreads.'
         />
       )}
-    </>
+    </div>
   );
 };
 
