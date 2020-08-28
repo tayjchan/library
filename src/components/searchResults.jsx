@@ -12,6 +12,10 @@ const SearchResultsContainer = ({ books, setShowInfoBox, resetSearch }) => {
     setSelectedBooks([...selectedBooks, bookId]);
   };
 
+  const onClickClear = () => {
+    resetSearch();
+  };
+
   return (
     <Segment>
       <h3>SEARCH RESULTS</h3>
@@ -33,6 +37,9 @@ const SearchResultsContainer = ({ books, setShowInfoBox, resetSearch }) => {
         <Button.Or />
         <Button onClick={onClickButton}>Add to later.</Button>
       </Button.Group>
+      <Button color='teal' style={{ marginLeft: 16 }} onClick={onClickClear}>
+        Clear
+      </Button>
     </Segment>
   );
 };
