@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { Button, Popup } from "semantic-ui-react";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Popup } from "semantic-ui-react";
-import Section from "./components/section";
-import AddBookForm from "./components/addBookForm";
-import { getBooks } from "./services/goodreadsService";
+import Home from "./pages/Home";
+import Booklist from "./pages/Booklist";
 
 function App() {
-  const [readBooks, setReadBooks] = useState(null);
-  const [laterBooks, setLaterBooks] = useState(null);
-
-  useEffect(() => {
-    async function getBookLists() {
-      const done = await getBooks("read");
-      const later = await getBooks("to-read");
-      setReadBooks(done);
-      setLaterBooks(later);
-    }
-    getBookLists();
-  }, []);
+  const signIn = async () => {
+    window.open("http://localhost:4000/auth/goodreads", "_self");
+    // await addBook("YCopgPhwWx");
+  };
 
   return (
-    <div className='App'>
+    <main className='App'>
       <h1>library.</h1>
       <div className='buttonGroup'>
         <Popup
@@ -34,16 +26,22 @@ function App() {
         />
         <Popup
           content='Sign-in via Google.'
-          trigger={<Button circular color='teal' icon='sign-in' />}
+          trigger={
+            <Button
+              circular
+              color='teal'
+              icon='sign-in'
+              onClick={() => signIn()}
+            />
+          }
         />
       </div>
       <hr />
-      <AddBookForm />
-      <div>
-        <Section books={readBooks} title='done.' />
-        <Section books={laterBooks} title='later.' />
-      </div>
-    </div>
+      <Switch>
+        <Route path='/' component={Home} exact />
+        <Route path='/maybe' component={Booklist} />
+      </Switch>
+    </main>
   );
 }
 
