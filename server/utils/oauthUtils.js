@@ -1,13 +1,11 @@
 const oauth = require("oauth");
-const {
-  goodreadsAccessToken,
-  goodreadsAccessSecret,
-} = require("../config/keys");
+const { GOODREADS_KEY, GOODREADS_SECRET } = require("../config/keys");
 
 const oauthConfig = {
+  url: "https://goodreads.com",
   requestUrl: "https://goodreads.com/oauth/request_token",
   accessUrl: "https://goodreads.com/oauth/access_token",
-  version: "1.0A",
+  version: "1.0",
   encryption: "HMAC-SHA1",
   callback: "http://localhost:3000",
 };
@@ -15,8 +13,8 @@ const oauthConfig = {
 let oa = new oauth.OAuth(
   oauthConfig.requestUrl,
   oauthConfig.accessUrl,
-  goodreadsAccessToken,
-  goodreadsAccessSecret,
+  GOODREADS_KEY,
+  GOODREADS_SECRET,
   oauthConfig.version,
   oauthConfig.callback,
   oauthConfig.encryption
@@ -24,23 +22,44 @@ let oa = new oauth.OAuth(
 
 function requestToken() {
   return new Promise((resolve, reject) => {
-    oa.getOAuthRequestToken((error, oauthToken, oauthTokenSecret, results) => {
-      if (error) {
-        return reject(
-          `Error getting OAuth request token : ${JSON.stringify(error)}`
-        );
-      } else {
-        let url = `https://goodreads.com/oauth/authorize?oauth_token=${oauthToken}&oauth_callback=${oa._authorize_callback}`;
-        // console.log(oauthToken);
-        // console.log(oauthTokenSecret);
-        return resolve({ oauthToken, oauthTokenSecret, url });
-      }
+    oa.getOAuthRequestToken((error, oAuthToken, oAuthTokenSecret, results) => {
+      if (error) reject(JSON.stringify(error));
+      const url = `${oauthConfig.url}/oauth/authorize?oauth_token=${oAuthToken}&oauth_callback=${oa._authorize_callback}`;
+
+      resolve({
+        oauthToken: oAuthToken,
+        oauthTokenSecret: oAuthTokenSecret,
+        url,
+      });
     });
-  }).catch((error) => {
-    console.log(error);
+  });
+}
+
+function processCallback(oauthToken, oauthTokenSecret) {
+  return new Promise((resolve, reject) => {
+    oa.getOAuthAccessToken(
+      oauthToken,
+      oauthTokenSecret,
+      1,
+      (error, accessToken, accessTokenSecret, results) => {
+        if (error) reject(JSON.stringify(error));
+        resolve({ accessToken, accessTokenSecret });
+      }
+    );
+  });
+}
+
+function get(path, accessToken, accessTokenSecret) {
+  return new Promise((resolve, reject) => {
+    oa.get(path, accessToken, accessTokenSecret, (res) => {
+      console.log(res);
+      resolve();
+    });
   });
 }
 
 module.exports = {
   requestToken,
+  processCallback,
+  get,
 };
