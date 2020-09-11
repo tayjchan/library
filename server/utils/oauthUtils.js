@@ -22,15 +22,10 @@ let oa = new oauth.OAuth(
 
 function requestToken() {
   return new Promise((resolve, reject) => {
-    oa.getOAuthRequestToken((error, oAuthToken, oAuthTokenSecret, results) => {
+    oa.getOAuthRequestToken((error, oauthToken, oauthTokenSecret, results) => {
       if (error) reject(JSON.stringify(error));
-      const url = `${oauthConfig.url}/oauth/authorize?oauth_token=${oAuthToken}&oauth_callback=${oa._authorize_callback}`;
-
-      resolve({
-        oauthToken: oAuthToken,
-        oauthTokenSecret: oAuthTokenSecret,
-        url,
-      });
+      const url = `${oauthConfig.url}/oauth/authorize?oauth_token=${oauthToken}&oauth_callback=${oa._authorize_callback}`;
+      resolve({ oauthToken, oauthTokenSecret, url });
     });
   });
 }
