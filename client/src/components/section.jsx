@@ -1,11 +1,12 @@
 import React from "react";
 import Carousel from "./carousel";
+import List from "./list";
 
-const Section = ({ title, books, getColorWithIndex }) => {
+const Section = ({ title, books, showAsList }) => {
   return (
     <>
       <h2>{title}</h2>
-      <Carousel items={books} getColorWithIndex={getColorWithIndex} />
+      {showAsList ? <List items={books} /> : <Carousel items={books} />}
     </>
   );
 };

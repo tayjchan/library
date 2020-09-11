@@ -7,9 +7,9 @@ import Home from "./pages/Home";
 import Booklist from "./pages/Booklist";
 
 function App() {
+  const [showAsList, setShowAsList] = React.useState(false);
   const signIn = async () => {
-    window.open("http://localhost:4000/auth/goodreads", "_self");
-    // await addBook("YCopgPhwWx");
+    window.open("http://localhost:4000/goodreads/authorize", "_self");
   };
 
   return (
@@ -18,14 +18,31 @@ function App() {
       <div className='buttonGroup'>
         <Popup
           content='Show as lists.'
-          trigger={<Button circular color='teal' icon='list ul' />}
+          trigger={
+            <Button
+              circular
+              color='teal'
+              icon='list ul'
+              onClick={() => setShowAsList(!showAsList)}
+            />
+          }
         />
         <Popup
           content='Go to Goodreads.'
-          trigger={<Button circular color='teal' icon='goodreads' />}
+          trigger={
+            <Button
+              circular
+              color='teal'
+              icon='goodreads'
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = "http://www.goodreads.com";
+              }}
+            />
+          }
         />
         <Popup
-          content='Sign-in via Google.'
+          content='Authorize with Goodreads.'
           trigger={
             <Button
               circular
@@ -38,7 +55,7 @@ function App() {
       </div>
       <hr />
       <Switch>
-        <Route path='/' component={Home} exact />
+        <Route path='/' render={() => <Home showAsList={showAsList} />} exact />
         <Route path='/maybe' component={Booklist} />
       </Switch>
     </main>

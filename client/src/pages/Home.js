@@ -2,10 +2,23 @@ import React, { useEffect, useState } from "react";
 import Section from "../components/section";
 import AddBookForm from "../components/addBookForm";
 import { getBooks } from "../services/goodreadsService";
+import Axios from "axios";
 
-const Home = () => {
+const Home = (props) => {
   const [readBooks, setReadBooks] = useState(null);
   const [laterBooks, setLaterBooks] = useState(null);
+
+  useEffect(() => {
+    if (
+      props.location &&
+      props.location.search &&
+      !sessionStorage.getItem("authorized")
+    ) {
+      Axios.get("http://localhost:4000/goodreads/callback").then(() => {
+        sessionStorage.setItem("authorized", "true");
+      });
+    }
+  }, [props.location]);
 
   useEffect(() => {
     async function getBookLists() {
@@ -15,36 +28,22 @@ const Home = () => {
       setLaterBooks(later);
     }
     getBookLists();
-    // checkAuthenticated();
   }, []);
-
-  const checkAuthenticated = async () => {
-    fetch("http://localhost:4000/auth/login/success", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) return response.json();
-        throw new Error("failed to authenticate user");
-      })
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <div>
       <AddBookForm />
       <div>
-        <Section books={readBooks} title='done.' />
-        <Section books={laterBooks} title='later.' />
+        <Section
+          books={readBooks}
+          showAsList={props.showAsList}
+          title='done.'
+        />
+        <Section
+          books={laterBooks}
+          showAsList={props.showAsList}
+          title='later.'
+        />
       </div>
     </div>
   );
