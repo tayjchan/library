@@ -46,10 +46,25 @@ function processCallback(oauthToken, oauthTokenSecret) {
 
 function get(path, accessToken, accessTokenSecret) {
   return new Promise((resolve, reject) => {
-    oa.get(path, accessToken, accessTokenSecret, (res) => {
-      console.log(res);
-      resolve();
+    oa.get(path, accessToken, accessTokenSecret, (error, res) => {
+      resolve(res);
     });
+  });
+}
+
+function post(path, accessToken, accessTokenSecret) {
+  return new Promise((resolve, reject) => {
+    oa.post(
+      path,
+      accessToken,
+      accessTokenSecret,
+      null,
+      null,
+      (error, response) => {
+        if (error) reject(error);
+        else resolve(response);
+      }
+    );
   });
 }
 
@@ -57,4 +72,5 @@ module.exports = {
   requestToken,
   processCallback,
   get,
+  post,
 };

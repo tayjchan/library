@@ -2,7 +2,12 @@ var express = require("express");
 var router = express.Router();
 const axios = require("axios");
 const xml2js = require("xml2js");
-const { requestToken, processCallback, get } = require("../utils/oauthUtils");
+const {
+  requestToken,
+  processCallback,
+  get,
+  post,
+} = require("../utils/oauthUtils");
 const { GOODREADS_KEY, GOODREADS_USERID } = require("../config/keys");
 
 const config = {
@@ -30,7 +35,6 @@ router.get("/", function (req, res) {
 router.get("/goodreads/authorize", function (req, res) {
   requestToken().then((data) => {
     const { oauthToken, oauthTokenSecret, url } = data;
-    console.log(url);
     sess.oauthToken = oauthToken;
     sess.oauthTokenSecret = oauthTokenSecret;
     res.redirect(url);
@@ -44,8 +48,32 @@ router.get("/goodreads/callback", function (req, res) {
     const { accessToken, accessTokenSecret } = data;
     sess.accessToken = accessToken;
     sess.accessTokenSecret = accessTokenSecret;
-    res.sendStatus(200);
+    get(
+      "https://www.goodreads.com/api/auth_user",
+      sess.accessToken,
+      sess.accessTokenSecret
+    ).then((goodreadsResult) => {
+      res.send(goodreadsResult);
+    });
   });
+});
+
+router.get("/goodreads/user", async function (req, res) {
+  const user = await get(
+    "https://www.goodreads.com/api/auth_user",
+    sess.accessToken,
+    sess.accessTokenSecret
+  );
+  res.status(200).send(user);
+});
+
+router.get("/goodreads/friends", async function (req, res) {
+  const user = await get(
+    "https://www.goodreads.com/friend/requests.xml",
+    sess.accessToken,
+    sess.accessTokenSecret
+  );
+  res.status(200).send(user);
 });
 
 router.get("/goodreads/books/", async function (req, res) {
@@ -71,6 +99,29 @@ router.get("/goodreads/books/", async function (req, res) {
     };
   });
   res.status(200).json(toReturn);
+});
+
+router.post("/goodreads/books/", async function (req, res) {
+  const bookIds = req.body.bookIds;
+  const shelf = req.body.shelf;
+  if (bookIds.length === 1) {
+    const path =
+      "https://www.goodreads.com/shelf/add_to_shelf.xml" +
+      "?name=" +
+      shelf +
+      "&book_id=" +
+      bookIds[0];
+    const toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
+    res.status(200).json(toReturn);
+  } else {
+    const path =
+      "https://www.goodreads.com/shelf/add_books_to_shelves.xml?bookids=" +
+      bookIds.join() +
+      "&shelves=" +
+      shelf;
+    const toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
+    res.status(200).json(toReturn);
+  }
 });
 
 router.get("/goodreads/search/", async function (req, res) {
