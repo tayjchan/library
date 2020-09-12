@@ -21,11 +21,6 @@ function parseXml(xml) {
   });
 }
 
-// https://www.goodreads.com/shelf/add_to_shelf.xml
-export async function addBook(shelf, bookId) {
-  const api = endpoint + "/shelf/add_to_shelf.xml?key=" + key + "?name="+shelf+"?book_id="+bookId;
-}
-
 export async function getBooks(shelf) {
   const api =
     endpoint +

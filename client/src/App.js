@@ -9,7 +9,10 @@ import Booklist from "./pages/Booklist";
 function App() {
   const [showAsList, setShowAsList] = React.useState(false);
   const signIn = async () => {
-    window.open("http://localhost:4000/goodreads/authorize", "_self");
+    window.open(
+      "https://server-library.herokuapp.com/goodreads/authorize",
+      "_self"
+    );
   };
 
   return (
@@ -55,7 +58,11 @@ function App() {
       </div>
       <hr />
       <Switch>
-        <Route path='/' render={() => <Home showAsList={showAsList} />} exact />
+        <Route
+          path='/'
+          render={(props) => <Home showAsList={showAsList} {...props} />}
+          exact
+        />
         <Route path='/maybe' component={Booklist} />
       </Switch>
     </main>

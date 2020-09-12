@@ -9,30 +9,30 @@ const Home = (props) => {
   const [laterBooks, setLaterBooks] = useState(null);
 
   useEffect(() => {
-    if (
-      props.location &&
-      props.location.search &&
-      !sessionStorage.getItem("authorized")
-    ) {
-      Axios.get("http://localhost:4000/goodreads/callback").then(() => {
-        sessionStorage.setItem("authorized", "true");
-      });
+    if (props.location && props.location.search) {
+      Axios.get("https://server-library.herokuapp.com/goodreads/callback").then(
+        () => {
+          sessionStorage.setItem("authorized", "true");
+          props.history.replace("/");
+        }
+      );
     }
-  }, [props.location]);
+  }, [props.location, props.history]);
 
   useEffect(() => {
-    async function getBookLists() {
-      const done = await getBooks("read");
-      const later = await getBooks("to-read");
-      setReadBooks(done);
-      setLaterBooks(later);
-    }
     getBookLists();
   }, []);
 
+  async function getBookLists() {
+    const done = await getBooks("read");
+    const later = await getBooks("to-read");
+    setReadBooks(done);
+    setLaterBooks(later);
+  }
+
   return (
     <div>
-      <AddBookForm />
+      <AddBookForm getBookLists={getBookLists} />
       <div>
         <Section
           books={readBooks}

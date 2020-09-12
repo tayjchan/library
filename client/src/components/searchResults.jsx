@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 import { Button, Segment } from "semantic-ui-react";
+import Axios from "axios";
 
-const SearchResultsContainer = ({ books, setShowInfoBox, resetSearch }) => {
+const SearchResultsContainer = ({
+  books,
+  setShowInfoBox,
+  resetSearch,
+  getBookLists,
+}) => {
   const [selectedBooks, setSelectedBooks] = useState([]);
-  const onClickButton = (e) => {
+  const onClickButton = async (shelf) => {
+    await Axios.post("https://server-library.herokuapp.com/goodreads/books/", {
+      bookIds: selectedBooks,
+      shelf,
+    });
     resetSearch();
     setShowInfoBox(true);
+    getBookLists();
   };
 
   const onClickBook = (bookId) => {
@@ -33,9 +44,9 @@ const SearchResultsContainer = ({ books, setShowInfoBox, resetSearch }) => {
         </ul>
       )}
       <Button.Group>
-        <Button onClick={onClickButton}>Add to read.</Button>
+        <Button onClick={() => onClickButton("read")}>Add to done.</Button>
         <Button.Or />
-        <Button onClick={onClickButton}>Add to later.</Button>
+        <Button onClick={() => onClickButton("to-read")}>Add to later.</Button>
       </Button.Group>
       <Button color='teal' style={{ marginLeft: 16 }} onClick={onClickClear}>
         Clear

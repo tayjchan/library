@@ -3,7 +3,7 @@ import { Form, Message } from "semantic-ui-react";
 import { searchBooks } from "../services/goodreadsService";
 import SearchResultsContainer from "./searchResults";
 
-const AddBookForm = () => {
+const AddBookForm = ({ getBookLists }) => {
   const searchResultsHeader = useRef(null);
 
   const [searchResults, setSearchResults] = useState([]);
@@ -50,6 +50,7 @@ const AddBookForm = () => {
         <SearchResultsContainer
           books={searchResults}
           setShowInfoBox={setShowInfoBox}
+          getBookLists={getBookLists}
           resetSearch={resetSearch}
         />
       )}
@@ -57,6 +58,7 @@ const AddBookForm = () => {
         <Message
           info
           content='This book has also been added to your list in Goodreads.'
+          onDismiss={() => setShowInfoBox(false)}
         />
       )}
     </div>
