@@ -1,5 +1,8 @@
 const oauth = require("oauth");
-const { GOODREADS_KEY, GOODREADS_SECRET } = require("../config/keys");
+// const { GOODREADS_KEY, GOODREADS_SECRET } = require("../config/keys");
+
+const GOODREADS_KEY = process.env.GOODREADS_KEY || "";
+const GOODREADS_SECRET = process.env.GOODREADS_SECRET || "";
 
 const oauthConfig = {
   url: "https://goodreads.com",

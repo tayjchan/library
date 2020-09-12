@@ -2,7 +2,6 @@ var express = require("express");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
-const keys = require("./config/keys");
 var goodreadsRouter = require("./routes/index");
 var session = require("express-session");
 

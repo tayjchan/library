@@ -8,13 +8,15 @@ const {
   get,
   post,
 } = require("../utils/oauthUtils");
-const { GOODREADS_KEY, GOODREADS_USERID } = require("../config/keys");
+// const { GOODREADS_KEY, GOODREADS_USERID } = require("../config/keys");
 
 const config = {
   headers: { "X-Requested-With": "XMLHttpRequest" },
 };
 
 var sess = {};
+const GOODREADS_KEY = process.env.GOODREADS_KEY || "";
+const GOODREADS_USERID = process.env.GOODREADS_USERID || "";
 
 function parseXml(xml) {
   return new Promise((resolve, reject) => {
