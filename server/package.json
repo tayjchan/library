@@ -5,6 +5,9 @@
   "scripts": {
     "start": "nodemon ./bin/www"
   },
+  "engines": {
+    "node": "13.x"
+  },
   "dependencies": {
     "axios": "^0.20.0",
     "cookie-parser": "~1.4.4",
