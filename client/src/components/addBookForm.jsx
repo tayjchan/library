@@ -11,6 +11,13 @@ const AddBookForm = ({ getBookLists }) => {
   const [showInfoBox, setShowInfoBox] = useState(false);
   const [loadingSearch, setLoadingSearch] = useState(false);
 
+  const showAutoclosingInfoBox = () => {
+    setShowInfoBox(true);
+    setTimeout(() => {
+      setShowInfoBox(false);
+    }, 5000);
+  };
+
   const resetSearch = () => {
     setSearchValue("");
     setSearchResults([]);
@@ -49,7 +56,7 @@ const AddBookForm = ({ getBookLists }) => {
       {searchResults.length > 0 && !showInfoBox && (
         <SearchResultsContainer
           books={searchResults}
-          setShowInfoBox={setShowInfoBox}
+          showAutoclosingInfoBox={showAutoclosingInfoBox}
           getBookLists={getBookLists}
           resetSearch={resetSearch}
         />

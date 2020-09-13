@@ -4,7 +4,7 @@ import { addBooks } from "../services/goodreadsService";
 
 const SearchResultsContainer = ({
   books,
-  setShowInfoBox,
+  showAutoclosingInfoBox,
   resetSearch,
   getBookLists,
 }) => {
@@ -13,7 +13,7 @@ const SearchResultsContainer = ({
   const onClickButton = async (shelf) => {
     await addBooks(shelf, selectedBooks);
     resetSearch();
-    setShowInfoBox(true);
+    showAutoclosingInfoBox();
     getBookLists(shelf);
   };
 
