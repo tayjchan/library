@@ -96,7 +96,7 @@ router.get("/goodreads/books/", async function (req, res) {
     return {
       title: book.title[0],
       author: book.authors[0].author[0].name[0],
-      bookId: book.work[0].id[0],
+      bookId: book.id[0],
       imageUrl: book.image_url[0],
     };
   });
