@@ -1,15 +1,16 @@
 import React, { useState, useRef } from "react";
 import { Form, Message } from "semantic-ui-react";
 import { searchBooks } from "../services/goodreadsService";
-import SearchResultsContainer from "./searchResults";
+import SearchResults from "./searchResults";
 
-const AddBookForm = ({ getBookLists }) => {
+const AddBookForm = ({ getBookLists, currentBooks }) => {
   const searchResultsHeader = useRef(null);
 
   const [searchResults, setSearchResults] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [showInfoBox, setShowInfoBox] = useState(false);
   const [loadingSearch, setLoadingSearch] = useState(false);
+  const [showInfoBox, setShowInfoBox] = useState(false);
+  const [showErrorBox, setShowErrorBox] = useState(false); // TODO: Use this
 
   const showAutoclosingInfoBox = () => {
     setShowInfoBox(true);
@@ -54,11 +55,12 @@ const AddBookForm = ({ getBookLists }) => {
         />
       </Form>
       {searchResults.length > 0 && !showInfoBox && (
-        <SearchResultsContainer
+        <SearchResults
           books={searchResults}
           showAutoclosingInfoBox={showAutoclosingInfoBox}
           getBookLists={getBookLists}
           resetSearch={resetSearch}
+          currentBooks={currentBooks}
         />
       )}
       {showInfoBox && (
@@ -66,6 +68,13 @@ const AddBookForm = ({ getBookLists }) => {
           info
           content='This book has also been added to your list in Goodreads.'
           onDismiss={() => setShowInfoBox(false)}
+        />
+      )}
+      {showErrorBox && (
+        <Message
+          error
+          content={"This book has already been added to that list."}
+          onDismiss={() => setShowErrorBox(false)}
         />
       )}
     </div>

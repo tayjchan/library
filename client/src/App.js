@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Button, Popup } from "semantic-ui-react";
+import { Popup } from "semantic-ui-react";
 import "./App.css";
-import "semantic-ui-css/semantic.min.css";
 import Home from "./pages/Home";
 import Booklist from "./pages/Booklist";
+import CircleButton from "./components/circleButton";
 
 function App() {
   const [showAsList, setShowAsList] = React.useState(false);
@@ -15,6 +15,11 @@ function App() {
     );
   };
 
+  const goToGoodreads = (e) => {
+    e.preventDefault();
+    window.location.href = "http://www.goodreads.com";
+  };
+
   return (
     <main className='App'>
       <h1>library.</h1>
@@ -22,9 +27,7 @@ function App() {
         <Popup
           content={showAsList ? "Show as carousel" : "Show as lists."}
           trigger={
-            <Button
-              circular
-              color='teal'
+            <CircleButton
               icon='list ul'
               onClick={() => setShowAsList(!showAsList)}
             />
@@ -33,27 +36,12 @@ function App() {
         <Popup
           content='Go to Goodreads.'
           trigger={
-            <Button
-              circular
-              color='teal'
-              icon='goodreads'
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = "http://www.goodreads.com";
-              }}
-            />
+            <CircleButton icon='goodreads' onClick={(e) => goToGoodreads(e)} />
           }
         />
         <Popup
           content='Authorize with Goodreads.'
-          trigger={
-            <Button
-              circular
-              color='teal'
-              icon='sign-in'
-              onClick={() => signIn()}
-            />
-          }
+          trigger={<CircleButton icon='sign-in' onClick={() => signIn()} />}
         />
       </div>
       <hr />

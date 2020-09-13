@@ -14,7 +14,7 @@ const config = {
   headers: { "X-Requested-With": "XMLHttpRequest" },
 };
 
-var sess = {};
+let sess = {};
 const GOODREADS_KEY = process.env.GOODREADS_KEY || "";
 const GOODREADS_USERID = process.env.GOODREADS_USERID || "";
 

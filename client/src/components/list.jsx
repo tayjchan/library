@@ -1,14 +1,19 @@
 import React from "react";
 import { Loader } from "semantic-ui-react";
 
-const List = ({ items }) => {
+const List = ({ items, onClickItem }) => {
   return (
-    <div style={{ maxHeight: 200, overflow: "auto" }}>
+    <div style={{ maxHeight: 200, overflow: "auto", paddingRight: 14 }}>
       <ul>
         {items ? (
           items.length > 0 ? (
             items.map(({ bookId, title, author }) => (
-              <li draggable key={bookId}>
+              <li
+                draggable
+                key={bookId}
+                data-bookid={bookId}
+                onClick={(e) => onClickItem && onClickItem(e)}
+              >
                 {title} by {author}
               </li>
             ))

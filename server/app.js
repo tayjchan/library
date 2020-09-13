@@ -6,8 +6,8 @@ var goodreadsRouter = require("./routes/index");
 var session = require("express-session");
 
 var app = express();
-var whitelist = ["http://localhost:3000", "https://tayjchan.github.io"];
-var corsOptions = {
+const whitelist = ["http://localhost:3000", "https://tayjchan.github.io"];
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);

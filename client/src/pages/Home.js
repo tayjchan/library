@@ -32,7 +32,10 @@ const Home = (props) => {
 
   return (
     <div>
-      <AddBookForm getBookLists={getBookLists} />
+      <AddBookForm
+        getBookLists={getBookLists}
+        currentBooks={{ read: readBooks, toRead: laterBooks }}
+      />
       <div>
         <Section
           books={readBooks}

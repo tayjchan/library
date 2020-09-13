@@ -1,30 +1,45 @@
 import React, { useState } from "react";
 import { Button, Segment } from "semantic-ui-react";
 import { addBooks } from "../services/goodreadsService";
+import List from "./list";
 
-const SearchResultsContainer = ({
+const SearchResults = ({
   books,
   showAutoclosingInfoBox,
   resetSearch,
   getBookLists,
+  currentBooks,
 }) => {
-  const [selectedBooks, setSelectedBooks] = useState([]);
+  const [selectedBookIds, setSelectedBookIds] = useState([]);
 
   const onClickButton = async (shelf) => {
-    await addBooks(shelf, selectedBooks);
+    // TODO: Be more consistent with shelf to list name
+    const booksOnShelf = currentBooks[shelf === "read" ? "read" : "toRead"];
+
+    // Remove all selected books that already exist on shelf
+    const bookIdsOnShelf = booksOnShelf.map(
+      (bookOnShelf) => bookOnShelf.bookId
+    );
+    const booksSelectedAndNotOnShelf = selectedBookIds.filter(
+      (selectedBookId) => !bookIdsOnShelf.includes(selectedBookId)
+    );
+
+    await addBooks(shelf, booksSelectedAndNotOnShelf);
     resetSearch();
     showAutoclosingInfoBox();
     getBookLists(shelf);
   };
 
-  const onClickBook = (bookId) => {
-    if (selectedBooks.includes(bookId)) {
-      setSelectedBooks(
-        selectedBooks.filter((selectedBook) => selectedBook !== bookId)
+  const onClickBook = (e) => {
+    const bookId = e.target.getAttribute("data-bookid");
+    if (selectedBookIds.includes(bookId)) {
+      setSelectedBookIds(
+        selectedBookIds.filter((selectedBookId) => selectedBookId !== bookId)
       );
     } else {
-      setSelectedBooks([...selectedBooks, bookId]);
+      setSelectedBookIds([...selectedBookIds, bookId]);
     }
+    e.target.classList.toggle("selectedBook");
   };
 
   const onClickClear = () => {
@@ -34,19 +49,9 @@ const SearchResultsContainer = ({
   return (
     <Segment>
       <h3>SEARCH RESULTS</h3>
-      {books && books.length > 0 && (
-        <ul>
-          {books.map(({ bookId, title, author }) => (
-            <li
-              key={bookId}
-              onClick={(e) => onClickBook(bookId)}
-              className={selectedBooks.includes(bookId) ? "selectedBook" : null}
-            >
-              {title} by {author}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div style={{ marginBottom: 14, marginTop: -14 }}>
+        <List items={books} onClickItem={onClickBook} />
+      </div>
       <Button.Group>
         <Button onClick={() => onClickButton("read")}>Add to done.</Button>
         <Button.Or />
@@ -59,4 +64,4 @@ const SearchResultsContainer = ({
   );
 };
 
-export default SearchResultsContainer;
+export default SearchResults;
