@@ -6,14 +6,20 @@ var goodreadsRouter = require("./routes/index");
 var session = require("express-session");
 
 var app = express();
+var whitelist = ["http://localhost:3000", "https://tayjchan.github.io/library"];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // allow session cookie from browser to pass through
+};
 
-app.use(
-  cors({
-    origin: "http://localhost:3000", // allow to server to accept request from different origin
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // allow session cookie from browser to pass through
-  })
-);
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: false }));
