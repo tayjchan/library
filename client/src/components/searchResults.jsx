@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Segment } from "semantic-ui-react";
-import Axios from "axios";
+import { addBooks } from "../services/goodreadsService";
 
 const SearchResultsContainer = ({
   books,
@@ -9,18 +9,22 @@ const SearchResultsContainer = ({
   getBookLists,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState([]);
+
   const onClickButton = async (shelf) => {
-    await Axios.post("https://server-library.herokuapp.com/goodreads/books/", {
-      bookIds: selectedBooks,
-      shelf,
-    });
+    await addBooks(shelf, selectedBooks);
     resetSearch();
     setShowInfoBox(true);
-    getBookLists();
+    getBookLists(shelf);
   };
 
   const onClickBook = (bookId) => {
-    setSelectedBooks([...selectedBooks, bookId]);
+    if (selectedBooks.includes(bookId)) {
+      setSelectedBooks(
+        selectedBooks.filter((selectedBook) => selectedBook !== bookId)
+      );
+    } else {
+      setSelectedBooks([...selectedBooks, bookId]);
+    }
   };
 
   const onClickClear = () => {

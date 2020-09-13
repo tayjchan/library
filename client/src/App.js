@@ -20,7 +20,7 @@ function App() {
       <h1>library.</h1>
       <div className='buttonGroup'>
         <Popup
-          content='Show as lists.'
+          content={showAsList ? "Show as carousel" : "Show as lists."}
           trigger={
             <Button
               circular
