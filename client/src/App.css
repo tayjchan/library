@@ -3,10 +3,23 @@
   max-width: 800px;
   margin: 0 auto;
 }
+
+h1 {
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
 .buttonGroup {
   float: right;
-  position: relative;
-  top: -50px;
+}
+
+.List {
+  max-height: 200px;
+  overflow: auto;
+  padding-right: 14px;
+  margin-top: -14px;
+  margin-bottom: 14px;
 }
 
 .Carousel {
@@ -37,4 +50,14 @@
 
 .selectedBook {
   color: teal;
+}
+
+@media all and (max-width: 575px) {
+  .App {
+    padding: 16px;
+  }
+  .Carousel {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
 }

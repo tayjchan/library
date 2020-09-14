@@ -49,9 +49,7 @@ const SearchResults = ({
   return (
     <Segment>
       <h3>SEARCH RESULTS</h3>
-      <div style={{ marginBottom: 14, marginTop: -14 }}>
-        <List items={books} onClickItem={onClickBook} />
-      </div>
+      <List items={books} onClickItem={onClickBook} />
       <Button.Group>
         <Button onClick={() => onClickButton("read")}>Add to done.</Button>
         <Button.Or />

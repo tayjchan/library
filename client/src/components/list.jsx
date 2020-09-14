@@ -3,7 +3,7 @@ import { Loader } from "semantic-ui-react";
 
 const List = ({ items, onClickItem }) => {
   return (
-    <div style={{ maxHeight: 200, overflow: "auto", paddingRight: 14 }}>
+    <div className='List'>
       <ul>
         {items ? (
           items.length > 0 ? (
