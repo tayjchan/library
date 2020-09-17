@@ -20,6 +20,7 @@ const Home = (props) => {
 
   useEffect(() => {
     async function getAllBooks() {
+      clearBooklists();
       await Promise.all([getBookLists("read"), getBookLists("to-read")]);
     }
     getAllBooks();
@@ -29,6 +30,20 @@ const Home = (props) => {
     const books = await getBooks(shelf);
     shelf === "read" ? setReadBooks(books) : setLaterBooks(books);
   }
+
+  const clearBooklists = () => {
+    setReadBooks(null);
+    setLaterBooks(null);
+  };
+
+  const refresh = async () => {
+    await Promise.all([getBookLists("read"), getBookLists("to-read")]);
+  };
+
+  const onDragStart = (e, bookId, shelf) => {
+    e.dataTransfer.setData("bookId", bookId);
+    e.dataTransfer.setData("shelf", shelf);
+  };
 
   return (
     <div>
@@ -41,11 +56,17 @@ const Home = (props) => {
           books={readBooks}
           showAsList={props.showAsList}
           title='done.'
+          onDragStart={onDragStart}
+          clearBooklists={clearBooklists}
+          refresh={refresh}
         />
         <Section
           books={laterBooks}
           showAsList={props.showAsList}
           title='later.'
+          onDragStart={onDragStart}
+          clearBooklists={clearBooklists}
+          refresh={refresh}
         />
       </div>
     </div>

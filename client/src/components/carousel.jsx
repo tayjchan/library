@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Loader } from "semantic-ui-react";
 import Book from "./book";
 
-const Carousel = ({ items }) => {
+const Carousel = ({ items, onDragStart, onDrop, shelf }) => {
   const [startIndex, setStartIndex] = useState(0);
   const onClickLeft = () => {
     if (startIndex > 0) {
@@ -25,6 +25,9 @@ const Carousel = ({ items }) => {
           title={element.title}
           imgUrl={element.imageUrl}
           author={element.author}
+          bookId={element.bookId}
+          onDragStart={onDragStart}
+          shelf={shelf}
         />
       );
     }
@@ -42,7 +45,7 @@ const Carousel = ({ items }) => {
   };
 
   return (
-    <div className='Carousel'>
+    <div className='Carousel' onDragOver={(e) => e.preventDefault()} onDrop={(e) => onDrop(e)}>
       <Button
         icon='arrow left'
         onClick={onClickLeft}
@@ -54,11 +57,11 @@ const Carousel = ({ items }) => {
           items.length > 0 ? (
             displayItems(items)
           ) : (
-            <div style={{ margin: "0 auto" }}>No books found.</div>
-          )
+              <div style={{ margin: "0 auto" }}>No books found.</div>
+            )
         ) : (
-          <Loader inline='centered' active />
-        )}
+            <Loader inline='centered' active />
+          )}
       </div>
       <Button
         icon='arrow right'

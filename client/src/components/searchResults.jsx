@@ -51,9 +51,19 @@ const SearchResults = ({
       <h3>SEARCH RESULTS</h3>
       <List items={books} onClickItem={onClickBook} />
       <Button.Group>
-        <Button onClick={() => onClickButton("read")}>Add to done.</Button>
+        <Button
+          color={selectedBookIds.length > 0 ? "teal" : null}
+          onClick={() => onClickButton("read")}
+        >
+          Add to done.
+        </Button>
         <Button.Or />
-        <Button onClick={() => onClickButton("to-read")}>Add to later.</Button>
+        <Button
+          color={selectedBookIds.length > 0 ? "teal" : null}
+          onClick={() => onClickButton("to-read")}
+        >
+          Add to later.
+        </Button>
       </Button.Group>
       <Button color='teal' style={{ marginLeft: 16 }} onClick={onClickClear}>
         Clear

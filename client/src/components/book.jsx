@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-const Book = ({ title, author, imgUrl }) => {
+const Book = ({ title, author, imgUrl, onDragStart, shelf, bookId }) => {
   const container = useRef();
   const text = useRef();
   const bookImg = useRef();
@@ -23,7 +23,7 @@ const Book = ({ title, author, imgUrl }) => {
   };
 
   return (
-    <div key={title} ref={container} className='Book' draggable='true'>
+    <div key={title} ref={container} className='Book' draggable onDragStart={(e) => onDragStart && onDragStart(e, bookId, shelf)}>
       <img
         src={imgUrl}
         alt={title}
