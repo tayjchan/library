@@ -7,12 +7,13 @@ import { addBooks } from "../services/goodreadsService";
 const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklists }) => {
   const onDrop = async (e) => {
     e.preventDefault();
-    clearBooklists();
+
     const bookId = e.dataTransfer.getData("bookId");
     const bookShelf = e.dataTransfer.getData("shelf");
     const shelfToRemoveFrom = (bookShelf === 'done.') ? 'read' : 'to-read';
     const shelfToAddTo = (title === 'done.') ? 'read' : 'to-read';
     if (shelfToAddTo !== shelfToRemoveFrom) {
+      clearBooklists();
       await addBooks(shelfToAddTo, [bookId]);
       await refresh();
     }
