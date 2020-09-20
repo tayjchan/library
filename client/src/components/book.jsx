@@ -23,7 +23,7 @@ const Book = ({ title, author, imgUrl, onDragStart, shelf, bookId }) => {
   };
 
   return (
-    <div key={title} ref={container} className='Book' draggable onDragStart={(e) => onDragStart && onDragStart(e, bookId, shelf)}>
+    <div key={title} ref={container} className='Book' draggable onDragStart={(e) => onDragStart && onDragStart(e, bookId)}>
       <img
         src={imgUrl}
         alt={title}

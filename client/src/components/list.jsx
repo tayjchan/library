@@ -17,7 +17,7 @@ const List = ({ items, onClickItem, onDragStart, onDrop, shelf }) => {
                 key={bookId}
                 data-bookid={bookId}
                 onClick={(e) => onClickItem && onClickItem(e)}
-                onDragStart={(e) => onDragStart && onDragStart(e, bookId, shelf)}
+                onDragStart={(e) => onDragStart && onDragStart(e, bookId)}
               >
                 {title} by {author}
               </li>

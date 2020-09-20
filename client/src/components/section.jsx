@@ -6,7 +6,7 @@ import SearchBar from "./searchBar";
 import { connect } from "react-redux";
 import { clearAllBooks } from "../actions";
 
-const Section = ({ title, unfilteredBooks, showAsList, onDragStart, refresh }) => {
+const Section = ({ title, unfilteredBooks, showAsList, refresh }) => {
   const [filterValue, setFilterValue] = React.useState('');
   const [filteredBooks, setFilteredBooks] = React.useState(unfilteredBooks);
 
@@ -22,13 +22,18 @@ const Section = ({ title, unfilteredBooks, showAsList, onDragStart, refresh }) =
     }
   }, [unfilteredBooks, filterValue]);
 
+  const onDragStart = (e, bookId) => {
+    e.dataTransfer.setData("bookId", bookId);
+    e.dataTransfer.setData("shelf", title);
+  };
+
   const onDrop = async (e) => {
     e.preventDefault();
 
     const bookId = e.dataTransfer.getData("bookId");
     const bookShelf = e.dataTransfer.getData("shelf");
-    const shelfToRemoveFrom = (bookShelf === 'done.') ? 'read' : 'to-read';
-    const shelfToAddTo = (title === 'done.') ? 'read' : 'to-read';
+    const shelfToRemoveFrom = (bookShelf === 'done') ? 'read' : 'to-read';
+    const shelfToAddTo = (title === 'done') ? 'read' : 'to-read';
     if (shelfToAddTo !== shelfToRemoveFrom) {
       clearAllBooks();
       await addBooks(shelfToAddTo, [bookId]);

@@ -46,27 +46,12 @@ const Home = (props) => {
     await Promise.all([getBookLists("read"), getBookLists("to-read")]);
   };
 
-  const onDragStart = (e, bookId, shelf) => {
-    e.dataTransfer.setData("bookId", bookId);
-    e.dataTransfer.setData("shelf", shelf);
-  };
-
   return (
     <div>
       <AddBookForm getBookLists={getBookLists} />
       <div>
-        <Section
-          showAsList={showAsList}
-          title='done'
-          onDragStart={onDragStart}
-          refresh={refresh}
-        />
-        <Section
-          showAsList={showAsList}
-          title='later'
-          onDragStart={onDragStart}
-          refresh={refresh}
-        />
+        <Section showAsList={showAsList} title='done' refresh={refresh} />
+        <Section showAsList={showAsList} title='later' refresh={refresh} />
       </div>
     </div>
   );
