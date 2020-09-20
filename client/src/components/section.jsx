@@ -5,6 +5,22 @@ import { addBooks } from "../services/goodreadsService";
 import SearchBar from "./searchBar";
 
 const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklists }) => {
+  const [filterValue, setFilterValue] = React.useState('');
+  const [filteredBooks, setFilteredBooks] = React.useState(books);
+
+  React.useEffect(() => {
+    if (filterValue !== "" && books.length > 0) {
+      const allBooks = books;
+      const lowercaseFilterValue = filterValue.toLowerCase();
+      const filtered = allBooks.filter((book) => {
+        return book.title.toLowerCase().includes(lowercaseFilterValue) || book.author.toLowerCase().includes(lowercaseFilterValue);
+      });
+      setFilteredBooks(filtered);
+    } else {
+      setFilteredBooks(books);
+    }
+  }, [books, filterValue]);
+
   const onDrop = async (e) => {
     e.preventDefault();
 
@@ -18,16 +34,17 @@ const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklist
       await refresh();
     }
   };
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "start", paddingTop: 8 }}>
         <h2>{title}</h2>
-        <SearchBar />
+        <SearchBar setFilterValue={setFilterValue} />
       </div>
       {showAsList ? (
-        <List items={books} shelf={title} onDragStart={onDragStart} onDrop={onDrop} />
+        <List items={filteredBooks} shelf={title} onDragStart={onDragStart} onDrop={onDrop} />
       ) : (
-          <Carousel items={books} shelf={title} onDragStart={onDragStart} onDrop={onDrop} />
+          <Carousel items={filteredBooks} shelf={title} onDragStart={onDragStart} onDrop={onDrop} />
         )}
     </>
   );

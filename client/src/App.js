@@ -59,7 +59,7 @@ function Main(props) {
           render={(props) => <Home showAsList={showAsList} {...props} />}
           exact
         />
-        <Route path='/maybe' component={Booklist} />
+        <Route path='/maybe' component={Booklist} exact />
       </Switch>
     </main>
   );

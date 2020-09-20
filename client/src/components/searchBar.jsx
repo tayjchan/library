@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Label, Icon } from "semantic-ui-react";
 import CircleButton from "./circleButton";
 
-const SearchBar = () => {
+const SearchBar = ({ setFilterValue }) => {
     const [showForm, setShowForm] = React.useState(false);
     const [formFocused, setFormFocused] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState('');
@@ -11,16 +11,20 @@ const SearchBar = () => {
     const clear = () => {
         setSearchTag('');
         setSearchValue('');
+        setFilterValue('');
     }
 
     const onChangeSearch = (e) => {
-        setSearchValue(e.target.value)
+        // TODO: Currently only searches on form submit. 
+        // Change to search while typing?
+        setFilterValue('');
+        setSearchValue(e.target.value);
     }
 
     const onSubmitSearch = (e) => {
-        // TODO: Enter button to submit form not working
         e.preventDefault();
-        setSearchTag(searchValue);
+        setSearchTag(searchValue.trim());
+        setFilterValue(searchValue.trim());
     }
 
     if ((showForm && !searchTag) || formFocused) {
