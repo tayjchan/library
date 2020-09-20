@@ -11,7 +11,6 @@ const Section = ({ title, unfilteredBooks, showAsList, onDragStart, refresh }) =
   const [filteredBooks, setFilteredBooks] = React.useState(unfilteredBooks);
 
   React.useEffect(() => {
-    console.log(title + ": " + unfilteredBooks);
     if (filterValue !== "" && unfilteredBooks.length > 0) {
       const lowercaseFilterValue = filterValue.toLowerCase();
       const filtered = unfilteredBooks.filter((book) => {

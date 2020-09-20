@@ -18,7 +18,6 @@ const Home = (props) => {
   const getBookLists = useCallback(
     async (shelf) => {
       const books = await getBooks(shelf);
-      console.log(books);
       shelf === "read" ? updateDoneBooks(books) : updateLaterBooks(books);
     },
     [updateDoneBooks, updateLaterBooks]

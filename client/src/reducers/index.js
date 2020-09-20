@@ -3,7 +3,6 @@ const defaultState = {
   doneBooks: null,
 };
 const books = (state = defaultState, action) => {
-  console.log(action);
   switch (action.type) {
     case "UPDATE_LATER_BOOKS":
       return {
