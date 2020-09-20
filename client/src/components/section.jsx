@@ -3,23 +3,25 @@ import Carousel from "./carousel";
 import List from "./list";
 import { addBooks } from "../services/goodreadsService";
 import SearchBar from "./searchBar";
+import { connect } from "react-redux";
+import { clearAllBooks } from "../actions";
 
-const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklists }) => {
+const Section = ({ title, unfilteredBooks, showAsList, onDragStart, refresh }) => {
   const [filterValue, setFilterValue] = React.useState('');
-  const [filteredBooks, setFilteredBooks] = React.useState(books);
+  const [filteredBooks, setFilteredBooks] = React.useState(unfilteredBooks);
 
   React.useEffect(() => {
-    if (filterValue !== "" && books.length > 0) {
-      const allBooks = books;
+    console.log(title + ": " + unfilteredBooks);
+    if (filterValue !== "" && unfilteredBooks.length > 0) {
       const lowercaseFilterValue = filterValue.toLowerCase();
-      const filtered = allBooks.filter((book) => {
+      const filtered = unfilteredBooks.filter((book) => {
         return book.title.toLowerCase().includes(lowercaseFilterValue) || book.author.toLowerCase().includes(lowercaseFilterValue);
       });
       setFilteredBooks(filtered);
     } else {
-      setFilteredBooks(books);
+      setFilteredBooks(unfilteredBooks);
     }
-  }, [books, filterValue]);
+  }, [unfilteredBooks, filterValue]);
 
   const onDrop = async (e) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklist
     const shelfToRemoveFrom = (bookShelf === 'done.') ? 'read' : 'to-read';
     const shelfToAddTo = (title === 'done.') ? 'read' : 'to-read';
     if (shelfToAddTo !== shelfToRemoveFrom) {
-      clearBooklists();
+      clearAllBooks();
       await addBooks(shelfToAddTo, [bookId]);
       await refresh();
     }
@@ -50,4 +52,12 @@ const Section = ({ title, books, showAsList, onDragStart, refresh, clearBooklist
   );
 };
 
-export default Section;
+const mapStateToProps = (state, ownProps) => ({
+  unfilteredBooks: ownProps.title === 'done' ? state.doneBooks : state.laterBooks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  clearAllBooks: () => dispatch(clearAllBooks()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Section);

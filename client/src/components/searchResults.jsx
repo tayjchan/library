@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import { Button, Segment } from "semantic-ui-react";
 import { addBooks } from "../services/goodreadsService";
 import List from "./list";
+import { connect } from "react-redux";
 
 const SearchResults = ({
-  books,
+  searchResults,
   showAutoclosingInfoBox,
   resetSearch,
   getBookLists,
-  currentBooks,
+  laterBooks, doneBooks
 }) => {
   const [selectedBookIds, setSelectedBookIds] = useState([]);
 
   const onClickButton = async (shelf) => {
     // TODO: Be more consistent with shelf to list name
-    const booksOnShelf = currentBooks[shelf === "read" ? "read" : "toRead"];
+    const booksOnShelf = (shelf === "read") ? doneBooks : laterBooks;
 
     // Remove all selected books that already exist on shelf
     const bookIdsOnShelf = booksOnShelf.map(
@@ -49,7 +50,7 @@ const SearchResults = ({
   return (
     <Segment>
       <h3>SEARCH RESULTS</h3>
-      <List items={books} onClickItem={onClickBook} />
+      <List items={searchResults} onClickItem={onClickBook} />
       <Button.Group>
         <Button
           color={selectedBookIds.length > 0 ? "teal" : null}
@@ -72,4 +73,9 @@ const SearchResults = ({
   );
 };
 
-export default SearchResults;
+const mapStateToProps = (state) => ({
+  laterBooks: state.laterBooks,
+  doneBooks: state.doneBooks,
+});
+
+export default connect(mapStateToProps)(SearchResults);

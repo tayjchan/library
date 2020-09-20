@@ -1,40 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import Section from "../components/section";
 import AddBookForm from "../components/addBookForm";
 import { getBooks, callback } from "../services/goodreadsService";
+import { connect } from "react-redux";
+import { updateLaterBooks, updateDoneBooks, clearAllBooks } from "../actions";
 
 const Home = (props) => {
-  const [readBooks, setReadBooks] = useState(null);
-  const [laterBooks, setLaterBooks] = useState(null);
+  const {
+    updateDoneBooks,
+    updateLaterBooks,
+    clearAllBooks,
+    location,
+    history,
+    showAsList,
+  } = props;
+
+  const getBookLists = useCallback(
+    async (shelf) => {
+      const books = await getBooks(shelf);
+      console.log(books);
+      shelf === "read" ? updateDoneBooks(books) : updateLaterBooks(books);
+    },
+    [updateDoneBooks, updateLaterBooks]
+  );
 
   useEffect(() => {
     async function redirectAfterAuthorization() {
       await callback();
       localStorage.setItem("authorized", "true");
-      props.history.replace("/");
+      history.replace("/");
     }
-    if (props.location && props.location.search) {
+    if (location && location.search) {
       redirectAfterAuthorization();
     }
-  }, [props.location, props.history]);
+  }, [location, history]);
 
   useEffect(() => {
     async function getAllBooks() {
-      clearBooklists();
+      clearAllBooks();
       await Promise.all([getBookLists("read"), getBookLists("to-read")]);
     }
     getAllBooks();
-  }, []);
-
-  async function getBookLists(shelf) {
-    const books = await getBooks(shelf);
-    shelf === "read" ? setReadBooks(books) : setLaterBooks(books);
-  }
-
-  const clearBooklists = () => {
-    setReadBooks(null);
-    setLaterBooks(null);
-  };
+  }, [getBookLists, clearAllBooks]);
 
   const refresh = async () => {
     await Promise.all([getBookLists("read"), getBookLists("to-read")]);
@@ -47,25 +54,18 @@ const Home = (props) => {
 
   return (
     <div>
-      <AddBookForm
-        getBookLists={getBookLists}
-        currentBooks={{ read: readBooks, toRead: laterBooks }}
-      />
+      <AddBookForm getBookLists={getBookLists} />
       <div>
         <Section
-          books={readBooks}
-          showAsList={props.showAsList}
-          title='done.'
+          showAsList={showAsList}
+          title='done'
           onDragStart={onDragStart}
-          clearBooklists={clearBooklists}
           refresh={refresh}
         />
         <Section
-          books={laterBooks}
-          showAsList={props.showAsList}
-          title='later.'
+          showAsList={showAsList}
+          title='later'
           onDragStart={onDragStart}
-          clearBooklists={clearBooklists}
           refresh={refresh}
         />
       </div>
@@ -73,4 +73,10 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  updateLaterBooks: (books) => dispatch(updateLaterBooks(books)),
+  updateDoneBooks: (books) => dispatch(updateDoneBooks(books)),
+  clearAllBooks: () => dispatch(clearAllBooks()),
+});
+
+export default connect(null, mapDispatchToProps)(Home);

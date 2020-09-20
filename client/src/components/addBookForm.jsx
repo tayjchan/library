@@ -3,7 +3,7 @@ import { Form, Message } from "semantic-ui-react";
 import { searchBooks } from "../services/goodreadsService";
 import SearchResults from "./searchResults";
 
-const AddBookForm = ({ getBookLists, currentBooks }) => {
+const AddBookForm = ({ getBookLists }) => {
   const searchResultsHeader = useRef(null);
 
   const [searchResults, setSearchResults] = useState([]);
@@ -56,11 +56,10 @@ const AddBookForm = ({ getBookLists, currentBooks }) => {
       </Form>
       {searchResults.length > 0 && !showInfoBox && (
         <SearchResults
-          books={searchResults}
+          searchResults={searchResults}
           showAutoclosingInfoBox={showAutoclosingInfoBox}
           getBookLists={getBookLists}
           resetSearch={resetSearch}
-          currentBooks={currentBooks}
         />
       )}
       {showInfoBox && (
