@@ -17,7 +17,7 @@ function Main(props) {
   };
 
   React.useEffect(() => {
-    setShowAsList(sessionStorage.getItem("listView"));
+    setShowAsList(localStorage.getItem("listView"));
   }, [setShowAsList]);
 
   const goToGoodreads = (e) => {
@@ -28,7 +28,7 @@ function Main(props) {
   const toggleListView = () => {
     const newState = !showAsList;
     setShowAsList(newState);
-    sessionStorage.setItem("listView", newState);
+    localStorage.setItem("listView", newState);
   };
 
   return (

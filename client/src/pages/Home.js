@@ -10,7 +10,7 @@ const Home = (props) => {
   useEffect(() => {
     async function redirectAfterAuthorization() {
       await callback();
-      sessionStorage.setItem("authorized", "true");
+      localStorage.setItem("authorized", "true");
       props.history.replace("/");
     }
     if (props.location && props.location.search) {
