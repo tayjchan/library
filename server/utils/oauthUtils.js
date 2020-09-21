@@ -1,5 +1,4 @@
 const oauth = require("oauth");
-// const { GOODREADS_KEY, GOODREADS_SECRET } = require("../config/keys");
 
 const GOODREADS_KEY = process.env.GOODREADS_KEY || "";
 const GOODREADS_SECRET = process.env.GOODREADS_SECRET || "";
@@ -50,6 +49,7 @@ function processCallback(oauthToken, oauthTokenSecret) {
 function get(path, accessToken, accessTokenSecret) {
   return new Promise((resolve, reject) => {
     oa.get(path, accessToken, accessTokenSecret, (error, res) => {
+      if (error) reject(error);
       resolve(res);
     });
   });

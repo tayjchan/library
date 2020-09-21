@@ -87,7 +87,13 @@ router.get("/goodreads/books/", async function (req, res) {
     GOODREADS_KEY +
     "&v=2&shelf=" +
     shelf;
-  const goodreadsResult = await axios.get(api, config);
+  let goodreadsResult;
+  try {
+    goodreadsResult = await axios.get(api, config);
+  } catch (error) {
+    return res.status(error.statusCode).json(error.data);
+  }
+
   const json = await parseXml(goodreadsResult.data);
   const results = json.GoodreadsResponse.reviews[0].review;
   if (!results) res.status(200).json([]);
@@ -100,7 +106,7 @@ router.get("/goodreads/books/", async function (req, res) {
       imageUrl: book.image_url[0],
     };
   });
-  res.status(200).json(toReturn);
+  return res.status(200).json(toReturn);
 });
 
 router.post("/goodreads/books/", async function (req, res) {
@@ -113,15 +119,25 @@ router.post("/goodreads/books/", async function (req, res) {
       shelf +
       "&book_id=" +
       bookIds[0];
-    const toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
-    res.status(200).json(toReturn);
+    let toReturn;
+    try {
+      toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
+    } catch (error) {
+      return res.status(error.statusCode).json(error.data);
+    }
+    return res.status(200).json(toReturn);
   } else {
     const path =
       "https://www.goodreads.com/shelf/add_books_to_shelves.xml?bookids=" +
       bookIds.join() +
       "&shelves=" +
       shelf;
-    const toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
+    let toReturn;
+    try {
+      toReturn = await post(path, sess.accessToken, sess.accessTokenSecret);
+    } catch (error) {
+      return res.status(error.statusCode).json(error.data);
+    }
     res.status(200).json(toReturn);
   }
 });
@@ -133,7 +149,12 @@ router.get("/goodreads/search/", async function (req, res) {
     GOODREADS_KEY +
     "&q=" +
     query;
-  const goodreadsResult = await axios.get(api, config);
+  let goodreadsResult;
+  try {
+    goodreadsResult = await axios.get(api, config);
+  } catch (error) {
+    return res.status(error.statusCode).json(error.data);
+  }
   const json = await parseXml(goodreadsResult.data);
   const results = json.GoodreadsResponse.search[0].results[0].work;
   const toReturn = results.map((res) => {

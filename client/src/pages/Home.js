@@ -47,13 +47,11 @@ const Home = (props) => {
   };
 
   return (
-    <div>
+    <>
       <AddBookForm getBookLists={getBookLists} />
-      <div>
-        <Section showAsList={showAsList} title='done' refresh={refresh} />
-        <Section showAsList={showAsList} title='later' refresh={refresh} />
-      </div>
-    </div>
+      <Section showAsList={showAsList} title='done' refresh={refresh} />
+      <Section showAsList={showAsList} title='later' refresh={refresh} />
+    </>
   );
 };
 
