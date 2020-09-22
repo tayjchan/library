@@ -3,13 +3,16 @@ import { Button, Segment } from "semantic-ui-react";
 import { addBooks } from "../services/goodreadsService";
 import List from "./list";
 import { connect } from "react-redux";
+import { toggleNeedToAuthorize } from '../actions';
 
 const SearchResults = ({
   searchResults,
   showAutoclosingInfoBox,
   resetSearch,
   getBookLists,
-  laterBooks, doneBooks
+  laterBooks,
+  doneBooks,
+  toggleNeedToAuthorize
 }) => {
   const [selectedBookIds, setSelectedBookIds] = useState([]);
 
@@ -25,10 +28,15 @@ const SearchResults = ({
       (selectedBookId) => !bookIdsOnShelf.includes(selectedBookId)
     );
 
-    await addBooks(shelf, booksSelectedAndNotOnShelf);
-    resetSearch();
-    showAutoclosingInfoBox();
-    getBookLists(shelf);
+    const res = await addBooks(shelf, booksSelectedAndNotOnShelf);
+    if (res === 401 || res === 500) {
+      resetSearch();
+      toggleNeedToAuthorize();
+    } else {
+      resetSearch();
+      showAutoclosingInfoBox();
+      getBookLists(shelf);
+    }
   };
 
   const onClickBook = (e) => {
@@ -73,9 +81,13 @@ const SearchResults = ({
   );
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  toggleNeedToAuthorize: () => dispatch(toggleNeedToAuthorize())
+});
+
 const mapStateToProps = (state) => ({
   laterBooks: state.laterBooks,
   doneBooks: state.doneBooks,
 });
 
-export default connect(mapStateToProps)(SearchResults);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

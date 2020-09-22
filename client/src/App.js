@@ -6,15 +6,10 @@ import Home from "./pages/Home";
 import Booklist from "./pages/Booklist";
 import CircleButton from "./components/circleButton";
 import { withRouter } from "react-router";
+import AuthorizePopup from "./components/authorizePopup";
 
 function Main(props) {
   const [showAsList, setShowAsList] = React.useState(true);
-  const signIn = async () => {
-    window.open(
-      "https://server-library.herokuapp.com/goodreads/authorize",
-      "_self"
-    );
-  };
 
   React.useEffect(() => {
     setShowAsList(localStorage.getItem("listView"));
@@ -42,15 +37,13 @@ function Main(props) {
           }
         />
         <Popup
+          position='bottom right'
           content='Go to Goodreads.'
           trigger={
             <CircleButton icon='goodreads' onClick={(e) => goToGoodreads(e)} />
           }
         />
-        <Popup
-          content='Authorize with Goodreads.'
-          trigger={<CircleButton icon='sign-in' onClick={() => signIn()} />}
-        />
+        <AuthorizePopup />
       </div>
       <hr />
       <Switch>

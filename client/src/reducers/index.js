@@ -1,9 +1,15 @@
 const defaultState = {
   laterBooks: null,
   doneBooks: null,
+  needToAuthorize: false,
 };
 const books = (state = defaultState, action) => {
   switch (action.type) {
+    case "TOGGLE_NEED_TO_AUTHORIZE":
+      return {
+        ...state,
+        needToAuthorize: !state.needToAuthorize,
+      };
     case "UPDATE_LATER_BOOKS":
       return {
         ...state,

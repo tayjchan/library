@@ -12,10 +12,16 @@ export async function getBooks(shelf) {
 }
 
 export async function addBooks(shelf, selectedBooks) {
-  await axios.post("https://server-library.herokuapp.com/goodreads/books/", {
-    bookIds: selectedBooks,
-    shelf,
-  });
+  try {
+    await axios.post("https://server-library.herokuapp.com/goodreads/books/", {
+      bookIds: selectedBooks,
+      shelf,
+    });
+  } catch (error) {
+    if (error.response) {
+      return error.response.status;
+    }
+  }
 }
 
 export async function searchBooks(query) {

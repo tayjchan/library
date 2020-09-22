@@ -15,3 +15,9 @@ export const clearAllBooks = () => {
     type: "CLEAR_BOOKS",
   };
 };
+
+export const toggleNeedToAuthorize = () => {
+  return {
+    type: "TOGGLE_NEED_TO_AUTHORIZE",
+  };
+};

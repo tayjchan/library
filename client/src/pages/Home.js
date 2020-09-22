@@ -4,6 +4,7 @@ import AddBookForm from "../components/addBookForm";
 import { getBooks, callback } from "../services/goodreadsService";
 import { connect } from "react-redux";
 import { updateLaterBooks, updateDoneBooks, clearAllBooks } from "../actions";
+import NeedToAuthorizeDimmer from "../components/needToAuthorizeDimmer";
 
 const Home = (props) => {
   const {
@@ -47,11 +48,11 @@ const Home = (props) => {
   };
 
   return (
-    <>
+    <NeedToAuthorizeDimmer>
       <AddBookForm getBookLists={getBookLists} />
       <Section showAsList={showAsList} title='done' refresh={refresh} />
       <Section showAsList={showAsList} title='later' refresh={refresh} />
-    </>
+    </NeedToAuthorizeDimmer>
   );
 };
 
